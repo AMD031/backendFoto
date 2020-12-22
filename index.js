@@ -5,6 +5,8 @@ const cors = require('cors');
 require('dotenv').config();
 app.use(cors());
 
+// Directorio Público
+app.use( express.static('public'));
 
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({

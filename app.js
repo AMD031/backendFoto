@@ -14,29 +14,25 @@ cloudinary.config({
 });
 
 app.post('/api/upload', async (req, res) => {
-
-   
     try {
         const fileStr = req.body.data;
         const uploadResponse = await cloudinary.uploader.upload(fileStr, {});
         console.log(uploadResponse);
         res.json({ res: uploadResponse});
     } catch (err) {
-        console.error(err);
         res.status(500).json({ err });
     }
 });
 
 app.delete('/api/delete',  async (req, res) => {
-
     try {
         const data = req.body.data;
         console.log('dato:',data);  
         await cloudinary.uploader.destroy(data, function(error,result) {
-        console.log(result, error) });
+        // console.log(result, error)
+     });
         res.json({ msg: 'ok' });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ err });
     }
 

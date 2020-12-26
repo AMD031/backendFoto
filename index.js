@@ -48,9 +48,9 @@ app.post('/api/upload', async (req, res) => {
     }
 });
 
-app.delete('/api/delete', async (req, res) => {
+app.delete('/api/delete/:id', async (req, res) => {
     try {
-        const data = req.body.data;
+        const data = req.params.id;
         await cloudinary.uploader.destroy(data, function (error, result) {
             if (result) {
                 res.json({ msg: 'ok' });
@@ -59,9 +59,7 @@ app.delete('/api/delete', async (req, res) => {
     } catch (err) {
         res.status(500).json({ err });
     }
-
 })
-
 
 app.put('/api/update', async (req, res) => {
     try {
@@ -83,7 +81,6 @@ app.put('/api/update', async (req, res) => {
         res.status(500).json({ err });
     }
 });
-
 
 app.get("/", (request, response) => {
     response.json({ message: "funciona" });

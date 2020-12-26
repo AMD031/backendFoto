@@ -19,9 +19,10 @@ cloudinary.config({
 
 
 app.get('/api/get/:id', async (req, res) => {
-    const data = req.params.id;
+    const data = req.params.id+'';
+  
     try {
-        cloudinary.api.resources_by_ids([...data],
+        cloudinary.api.resources_by_ids([data],
             (error, result) => {
                 res.json({ result });
             });

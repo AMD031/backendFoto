@@ -1,10 +1,12 @@
 let express = require('express');
 let app = express();
-// let cors = require('cors');
+let cors = require('cors');
 require('dotenv').config();
 
 app.use(express.json({ limit: '50mb' }));
+app.use(cors());
 app.use(express.static('public'));
+// app.use( express.json() );
 
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -12,18 +14,6 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-// app.use( express.json() );
-app.use(cors());
-
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", '*');
-//     res.header("Access-Control-Allow-Credentials", true);
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-//     next();
-// });
-
 
 app.get('/api/get/:id', async (req, res) => {
     const data = req.params.id+'';
@@ -96,3 +86,11 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log('listening on 3001');
 });
+
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", '*');
+//     res.header("Access-Control-Allow-Credentials", true);
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+//     next();
+// });

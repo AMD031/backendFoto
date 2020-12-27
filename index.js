@@ -1,6 +1,6 @@
 let express = require('express');
 let app = express();
-let cors = require('cors');
+// let cors = require('cors');
 require('dotenv').config();
 
 app.use(express.json({ limit: '50mb' }));
@@ -18,7 +18,16 @@ cloudinary.config({
 
 // app.use(cors());
 
-app.get('/api/get/:id',cors(), async (req, res) => {
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", '*');
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+    next();
+});
+
+
+app.get('/api/get/:id', async (req, res) => {
     const data = req.params.id+'';
     try {
         cloudinary.api.resources_by_ids([data],
@@ -33,7 +42,7 @@ app.get('/api/get/:id',cors(), async (req, res) => {
 
 });
 
-app.post('/api/upload', cors(), async (req, res) => {
+app.post('/api/upload', async (req, res) => {
     try {
         const fileStr = req.body.data;
         const uploadResponse = await cloudinary.uploader.upload(fileStr, {
@@ -47,7 +56,7 @@ app.post('/api/upload', cors(), async (req, res) => {
     }
 });
 
-app.delete('/api/delete/:id',cors(), async (req, res) => {
+app.delete('/api/delete/:id', async (req, res) => {
     try {
         const data = req.params.id;
         await cloudinary.uploader.destroy(data, function (error, result) {
@@ -60,7 +69,7 @@ app.delete('/api/delete/:id',cors(), async (req, res) => {
     }
 })
 
-app.put('/api/update',cors(), async (req, res) => {
+app.put('/api/update', async (req, res) => {
     try {
         const imgkey = req.body.data.imgkey;
         const img = req.body.data.img;
@@ -81,7 +90,7 @@ app.put('/api/update',cors(), async (req, res) => {
     }
 });
 
-app.get("/", cors(), (request, response) => {
+app.get("/", (request, response) => {
     response.json({ message: "funciona" });
 });
 

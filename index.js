@@ -1,12 +1,11 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
+let express = require('express');
+let app = express();
+let cors = require('cors');
 require('dotenv').config();
-app.use(express.json({ limit: '50mb' }));
-app.use(cors());
 
-// Directorio Público
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static('public'));
+
 const cloudinary = require('cloudinary').v2;
 // const { json } = require('express');
 
@@ -17,8 +16,9 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// app.use(cors());
 
-app.get('/api/get/:id', async (req, res) => {
+app.get('/api/get/:id',cors(), async (req, res) => {
     const data = req.params.id+'';
     try {
         cloudinary.api.resources_by_ids([data],
@@ -33,7 +33,7 @@ app.get('/api/get/:id', async (req, res) => {
 
 });
 
-app.post('/api/upload', async (req, res) => {
+app.post('/api/upload', cors(), async (req, res) => {
     try {
         const fileStr = req.body.data;
         const uploadResponse = await cloudinary.uploader.upload(fileStr, {
@@ -47,7 +47,7 @@ app.post('/api/upload', async (req, res) => {
     }
 });
 
-app.delete('/api/delete/:id', async (req, res) => {
+app.delete('/api/delete/:id',cors(), async (req, res) => {
     try {
         const data = req.params.id;
         await cloudinary.uploader.destroy(data, function (error, result) {
@@ -60,7 +60,7 @@ app.delete('/api/delete/:id', async (req, res) => {
     }
 })
 
-app.put('/api/update', async (req, res) => {
+app.put('/api/update',cors(), async (req, res) => {
     try {
         const imgkey = req.body.data.imgkey;
         const img = req.body.data.img;
@@ -81,7 +81,7 @@ app.put('/api/update', async (req, res) => {
     }
 });
 
-app.get("/", (request, response) => {
+app.get("/", cors(), (request, response) => {
     response.json({ message: "funciona" });
 });
 

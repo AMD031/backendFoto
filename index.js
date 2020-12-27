@@ -7,24 +7,22 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.static('public'));
 
 const cloudinary = require('cloudinary').v2;
-// const { json } = require('express');
-
-
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// app.use(cors());
+app.use( express.json() );
+app.use(cors());
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", '*');
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", '*');
+//     res.header("Access-Control-Allow-Credentials", true);
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+//     next();
+// });
 
 
 app.get('/api/get/:id', async (req, res) => {
